@@ -128,21 +128,6 @@ void print_list(no_base *cabeca){
 }
 
 
-int teste(no_base *cabeca) {
-    buscar(cabeca, 1);
-    print_list(cabeca);
-    add_no_cabeca(&cabeca,10);
-    add_no_cabeca(&cabeca,11);
-    add_no_cabeca(&cabeca,3);
-    add_no_cauda(&cabeca,20);
-    buscar(cabeca,4);
-    remover_indice(&cabeca,2);
-    add_no_meio(&cabeca,33,7);
-    print_list(cabeca);
-    return 0;
-}
-
-
 void interacao_usuario(no_base **cabeca){
 	printf("\nQual operação com listas você deseja operar?\n");
 	printf("1 - inserção de valores no inicio.\n");
@@ -190,7 +175,6 @@ void interacao_usuario(no_base **cabeca){
 
 int main(){
 	no_base *cabeca=NULL;
-	teste(cabeca);
 	while (1){
 		interacao_usuario(&cabeca);
 		}
