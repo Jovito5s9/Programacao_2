@@ -20,7 +20,6 @@ void add_no_cabeca(no_base **cabeca, int valor){
 
 
 void add_no_cauda(no_base **cabeca, int valor){
-    // Criar o novo nó
     no_base *novo = malloc(sizeof(no_base));
     novo->valor = valor;
     novo->proximo = NULL;
@@ -43,19 +42,57 @@ void add_no_cauda(no_base **cabeca, int valor){
 
 void buscar(no_base *cabeca,int indice){
 	if (cabeca==NULL){
-		printf("A lista está vazia, não há nenhum elemento nela");
+		printf("A lista está vazia, não há nenhum elemento para buscar nela");
 		return;
 	}
-	indice=indice;
 	no_base *no_atual=cabeca;
 	for (int i = 1; i < indice; i++) {
 	    if (no_atual->proximo == NULL) {
-	        printf("a lista não possui o indice %d", indice);
+	        printf("\na lista não possui o indice %d para buscar\n", indice);
 	        return;
 	    }
 	    no_atual = no_atual->proximo;
 	}
-	printf("valor no indice %d: %d",indice, no_atual->valor);
+	printf("\nvalor no indice %d: %d\n",indice, no_atual->valor);
+}
+
+
+void remover_indice(no_base **cabeca, int indice){
+    if (*cabeca == NULL){
+        printf("\nA lista está vazia, não há nenhum elemento para remover nela\n");
+        return;
+    }
+
+    no_base *no_removido = *cabeca;
+
+    // Caso especial: remover o primeiro nó
+    if (indice == 1){
+        *cabeca = no_removido->proximo;
+        if (*cabeca != NULL)
+            (*cabeca)->anterior = NULL;
+        printf("\nvalor %d no indice 1 foi removido\n", no_removido->valor);
+        free(no_removido);
+        return;
+    }
+    for (int i = 1; i < indice; i++) {
+        if (no_removido->proximo == NULL) {
+            printf("\na lista não possui o indice %d para remover\n", indice);
+            return;
+        }
+        no_removido = no_removido->proximo;
+    }
+    printf("\nvalor %d no indice %d foi removido\n", no_removido->valor, indice);
+	no_base *anterior=no_removido->anterior;
+	no_base *proximo=no_removido->proximo;
+    if (anterior != NULL){
+        anterior->proximo = proximo;
+    }
+    if (proximo != NULL){
+        proximo->anterior = anterior;
+    }
+
+    free(no_removido);
+    no_removido=NULL;
 }
 
 
@@ -66,7 +103,7 @@ void print_list(no_base *cabeca){
 		printf("-> [%d] <-",no_atual->valor);
 		no_atual=no_atual->proximo;
 	}
-	printf("-> NULL");
+	printf("-> NULL\n");
 }
 
 
@@ -76,8 +113,10 @@ int main() {
     print_list(cabeca);
     add_no_cabeca(&cabeca,10);
     add_no_cabeca(&cabeca,11);
+    add_no_cabeca(&cabeca,3);
     add_no_cauda(&cabeca,20);
     buscar(cabeca,4);
+    remover_indice(&cabeca,2);
     print_list(cabeca);
     return 0;
 }
