@@ -7,30 +7,55 @@ typedef struct no_base{
 	int valor;
 	} no_base;
 
-void add_no(no_base **cabeca, int valor){
-	no_base **cabeca_antiga=cabeca;
+void add_no_cabeca(no_base **cabeca, int valor){
+	no_base *cabeca_antiga=*cabeca;
 	no_base *novo_no = malloc(sizeof(no_base));
 	novo_no->valor=valor;
-	novo_no->proximo=*cabeca_antiga;
+	novo_no->proximo=cabeca_antiga;
 	novo_no->anterior=NULL;
 	*cabeca=novo_no;
+	printf("\nnovo nó criado com valor: [%d]\n",valor);
 }
+
+void add_no_cauda(no_base **cabeca, int valor){
+    // Criar o novo nó
+    no_base *novo = malloc(sizeof(no_base));
+    novo->valor = valor;
+    novo->proximo = NULL;
+    if (*cabeca == NULL) {
+        novo->anterior = NULL;
+        *cabeca = novo;
+        printf("\nnovo nó criado com valor: [%d]\n", valor);
+        return;
+    }
+    no_base *ultimo = *cabeca;
+    while (ultimo->proximo != NULL) {
+        ultimo = ultimo->proximo;
+    }
+    ultimo->proximo = novo;
+    novo->anterior = ultimo;
+
+    printf("\nnovo nó criado com valor: [%d]\n", valor);
+}
+
 
 void print_list(no_base *cabeca){
 	no_base *no_atual=cabeca;
-	printf("\nNULL");
-	while (no_atual!=NULL){
-		printf(" <-> [%d] <-> ",no_atual->valor);
+	printf("\nLista atual:\nNULL <-");
+	while (no_atual !=NULL){
+		printf("-> [%d] <-",no_atual->valor);
 		no_atual=no_atual->proximo;
 	}
-	printf("NULL");
+	printf("-> NULL");
 }
 
 int main() {
     no_base *cabeca=NULL;
+    
     print_list(cabeca);
-    add_no(&cabeca,10);
-    add_no(&cabeca,11);
+    add_no_cabeca(&cabeca,10);
+    add_no_cabeca(&cabeca,11);
+    add_no_cauda(&cabeca,20);
     print_list(cabeca);
     return 0;
 }
