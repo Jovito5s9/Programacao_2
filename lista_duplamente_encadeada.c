@@ -1,3 +1,10 @@
+
+// grupo 07
+//alunos:
+//Jovito Miguel de Souza e Souza
+//João Victor de lima Silva
+//Carlos Eduardo Souza Franco
+
 #include <stdio.h>
 #include <stdlib.h>
 
