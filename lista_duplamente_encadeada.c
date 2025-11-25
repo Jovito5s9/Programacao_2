@@ -65,6 +65,9 @@ void add_no_meio(no_base **cabeca, int valor, int indice){
     novo->proximo = alvo->proximo;
     alvo->proximo = novo;
     novo->anterior = alvo;
+    if (novo->proximo != NULL) {
+        novo->proximo->anterior = novo;
+    }
     printf("\nnovo nó criado com valor: [%d]\n", valor);
 }
 
@@ -125,8 +128,7 @@ void print_list(no_base *cabeca){
 }
 
 
-int main() {
-    no_base *cabeca=NULL;
+int teste(no_base *cabeca) {
     buscar(cabeca, 1);
     print_list(cabeca);
     add_no_cabeca(&cabeca,10);
@@ -138,4 +140,59 @@ int main() {
     add_no_meio(&cabeca,33,7);
     print_list(cabeca);
     return 0;
+}
+
+
+void interacao_usuario(no_base **cabeca){
+	printf("\nQual operação com listas você deseja operar?\n");
+	printf("1 - inserção de valores no inicio.\n");
+	printf("2 - inserção de valores no final.\n");
+	printf("3 - inserção de valores em um indice a escolha.\n");
+	printf("4 - remover valores.\n");
+	printf("5 - buscar.\n");
+	printf("6 - listagem dos valores da lista.\n");
+	int resposta, valor, indice;
+	scanf("%d",&resposta);
+	switch(resposta) {
+        case 1:
+            printf("Valor: ");
+            scanf("%d", &valor);
+            add_no_cabeca(cabeca, valor);
+            break;
+        case 2:
+            printf("Valor: ");
+            scanf("%d", &valor);
+            add_no_cauda(cabeca, valor);
+            break;
+        case 3:
+            printf("Valor: ");
+            scanf("%d", &valor);
+            printf("Indice ");
+            scanf("%d", &indice);
+            add_no_meio(cabeca, valor, indice);
+            break;
+        case 4:
+            printf("Índice: ");
+            scanf("%d", &indice);
+            remover_indice(cabeca, indice);
+            break;
+        case 5:
+            printf("Índice: ");
+            scanf("%d", &indice);
+            buscar(*cabeca, indice);
+            break;
+        case 6:
+        	print_list(*cabeca);
+        	break;
+	}
+}
+
+
+int main(){
+	no_base *cabeca=NULL;
+	teste(cabeca);
+	while (1){
+		interacao_usuario(&cabeca);
+		}
+	return 0;
 }
