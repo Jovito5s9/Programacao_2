@@ -7,6 +7,7 @@ typedef struct no_base{
 	int valor;
 	} no_base;
 
+
 void add_no_cabeca(no_base **cabeca, int valor){
 	no_base *cabeca_antiga=*cabeca;
 	no_base *novo_no = malloc(sizeof(no_base));
@@ -16,6 +17,7 @@ void add_no_cabeca(no_base **cabeca, int valor){
 	*cabeca=novo_no;
 	printf("\nnovo nó criado com valor: [%d]\n",valor);
 }
+
 
 void add_no_cauda(no_base **cabeca, int valor){
     // Criar o novo nó
@@ -39,6 +41,24 @@ void add_no_cauda(no_base **cabeca, int valor){
 }
 
 
+void buscar(no_base *cabeca,int indice){
+	if (cabeca==NULL){
+		printf("A lista está vazia, não há nenhum elemento nela");
+		return;
+	}
+	indice=indice;
+	no_base *no_atual=cabeca;
+	for (int i = 1; i < indice; i++) {
+	    if (no_atual->proximo == NULL) {
+	        printf("a lista não possui o indice %d", indice);
+	        return;
+	    }
+	    no_atual = no_atual->proximo;
+	}
+	printf("valor no indice %d: %d",indice, no_atual->valor);
+}
+
+
 void print_list(no_base *cabeca){
 	no_base *no_atual=cabeca;
 	printf("\nLista atual:\nNULL <-");
@@ -49,13 +69,15 @@ void print_list(no_base *cabeca){
 	printf("-> NULL");
 }
 
+
 int main() {
     no_base *cabeca=NULL;
-    
+    buscar(cabeca, 1);
     print_list(cabeca);
     add_no_cabeca(&cabeca,10);
     add_no_cabeca(&cabeca,11);
     add_no_cauda(&cabeca,20);
+    buscar(cabeca,4);
     print_list(cabeca);
     return 0;
 }
