@@ -36,6 +36,52 @@ Node *inserir(Node *raiz, int valor)
     return raiz;
 }
 
+Node* remover(Node* raiz, int valor) {
+    if (raiz == NULL) {
+        return NULL;
+    }
+
+    if (valor < raiz->valor) {
+        raiz->esq = remover(raiz->esq, valor);
+        return raiz;
+    }
+    else if (valor > raiz->valor) {
+        raiz->dir = remover(raiz->dir, valor);
+        return raiz;
+    }
+
+    //remoção de folhas
+    if (raiz->dir == NULL && raiz->esq == NULL) {
+        free(raiz);
+        return NULL;
+    }
+    
+    //remoção de nó com 1 filho
+    if (raiz->esq == NULL) {
+        Node *temp = raiz;
+        raiz = raiz->dir;
+        free(temp);
+        return raiz;
+    }
+    else if (raiz->dir == NULL) {
+        Node *temp = raiz;
+        raiz = raiz->esq;
+        free(temp);
+        return raiz;
+    }
+    //remoção de nó com 2 filhos
+    else {
+        Node *temp = raiz->dir;
+        while (temp->esq != NULL) {
+            temp = raiz->esq;
+        }
+
+        raiz->valor = temp->valor;
+        raiz->dir = remover(raiz->dir, temp->valor);
+        return raiz;
+    }
+}
+
 void imprimirEmOrdem(Node *raiz)
 {
     if (raiz != NULL)
@@ -56,6 +102,8 @@ int main()
     inserir(raiz, 20);
     inserir(raiz, 40);
     inserir(raiz, 90);
+
+    remover(raiz, 50);
 
     imprimirEmOrdem(raiz);
     printf("\n");
