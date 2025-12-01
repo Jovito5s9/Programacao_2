@@ -38,6 +38,7 @@ Node *inserir(Node *raiz, int valor)
 
 Node *remover(Node *raiz, int valor)
 {
+    //buscar o valor
     if (raiz == NULL)
     {
         return NULL;
@@ -101,10 +102,8 @@ void imprimirEmOrdem(Node *raiz)
     }
 }
 
-int main()
+void uiUsuario(raiz)
 {
-    Node *raiz = NULL;
-
     int resposta;
     do
     {
@@ -125,8 +124,39 @@ int main()
             inserir(raiz, valor);
             break;
 
-        default:
+        case 2:
+            // buscarValor()
             break;
+
+        case 3:
+            printf("Qual dos valores deseja remover?");
+            imprimirEmOrdem(raiz);
+            int valor;
+            scanf("%d", &valor);
+            remover(raiz, valor);
+            break;
+
+        case 4:
+            printf("Em qual ordem deseja mostrar a árvore");
+            printf("1. Pré-ordem");
+            printf("2. Em ordem");
+            printf("3. Pós-ordem");
+            int escolha;
+            scanf("%d", &escolha);
+            switch (escolha)
+            {
+            case 1:
+
+                break;
+
+            case 2:
+
+                break;
+
+            case 3:
+                imprimirEmOrdem(raiz);
+                break;
+            }
         }
     } while (resposta != 0);
 
@@ -141,6 +171,13 @@ int main()
 
     imprimirEmOrdem(raiz);
     printf("\n");
+}
+
+int main()
+{
+    Node *raiz = NULL;
+
+    int resposta;
 
     return 0;
 }
