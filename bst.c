@@ -75,7 +75,7 @@ Node *remover(Node *raiz, int valor)
         free(temp);
         return raiz;
     }
-    // remoção de nó com 2 filhos
+    // remoção de nó com 2 filhos (o sucessor da raiz removida torna-se a nova raiz)
     else
     {
         Node *temp = raiz->dir;
@@ -87,6 +87,29 @@ Node *remover(Node *raiz, int valor)
         raiz->valor = temp->valor;
         raiz->dir = remover(raiz->dir, temp->valor);
         return raiz;
+    }
+}
+
+int buscarValor(Node *raiz, int valor)
+{
+    if (raiz == NULL)
+    {
+        return 0;
+    }
+
+    if (valor == raiz->valor)
+    {
+        return 1;
+    }
+
+    if (valor < raiz->valor)
+    {
+        return buscarValor(raiz->esq, valor);
+    }
+
+    else
+    {
+        return buscarValor(raiz->dir, valor);
     }
 }
 
@@ -110,8 +133,10 @@ void imprimirPreOrdem(Node *raiz)
     }
 }
 
-void imprimirPosOrdem(Node *raiz) {
-    if (raiz != NULL) {
+void imprimirPosOrdem(Node *raiz)
+{
+    if (raiz != NULL)
+    {
         imprimirPosOrdem(raiz->esq);
         imprimirPosOrdem(raiz->dir);
         printf("%d ", raiz->valor);
@@ -141,7 +166,18 @@ Node *uiUsuario(Node *raiz)
             break;
 
         case 2:
-            // buscarValor()
+            printf("Qual valor deseja buscar: ");
+            int valorBusca;
+            scanf("%d", &valorBusca);
+
+            if (buscarValor(raiz, valorBusca))
+            {
+                printf("Valor %d encontrado na árvore!\n", valorBusca);
+            }
+            else
+            {
+                printf("Valor %d não existe na árvore.\n", valorBusca);
+            }
             break;
 
         case 3:
@@ -161,9 +197,15 @@ Node *uiUsuario(Node *raiz)
             scanf("%d", &escolha);
             switch (escolha)
             {
-            case 1: imprimirPreOrdem(raiz); break;
-            case 2: imprimirEmOrdem(raiz); break;
-            case 3: imprimirPosOrdem(raiz); break;
+            case 1:
+                imprimirPreOrdem(raiz);
+                break;
+            case 2:
+                imprimirEmOrdem(raiz);
+                break;
+            case 3:
+                imprimirPosOrdem(raiz);
+                break;
             }
             printf("\n");
             break;
