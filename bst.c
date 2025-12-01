@@ -143,6 +143,14 @@ void imprimirPosOrdem(Node *raiz)
     }
 }
 
+void liberarArvore(Node *raiz) {
+    if (raiz != NULL) {
+        liberarArvore(raiz->esq);
+        liberarArvore(raiz->dir);
+        free(raiz);
+    }
+}
+
 Node *uiUsuario(Node *raiz)
 {
     int resposta;
@@ -209,6 +217,10 @@ Node *uiUsuario(Node *raiz)
             }
             printf("\n");
             break;
+
+            case 0: 
+            liberarArvore(raiz);
+            return NULL;
         }
     } while (resposta != 0);
 
