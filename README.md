@@ -10,6 +10,7 @@ A última atividade sempre estará na branch padrão(main/master).
 As atividades estarão cada uma disposta em um link abaixo:
 * [Última atividade](https://github.com/Jovito5s9/Programacao_2)
 * [1 - Lista Duplamente encadeada](https://github.com/Jovito5s9/Programacao_2/tree/lista_duplamente_encadeada)
+* [2 - Árvore Binária (BST)](https://github.com/Jovito5s9/Programacao_2/tree/BST)
 ---
 ## Tecnologias usadas nas atividades
 * [Linguagem C](https://www.c-language.org/) - Liguagem usada para os programas.
