@@ -38,11 +38,9 @@ Node *inserir(Node *raiz, int valor)
 
 Node *remover(Node *raiz, int valor)
 {
-    //buscar o valor
+    // buscar o valor
     if (raiz == NULL)
-    {
         return NULL;
-    }
 
     if (valor < raiz->valor)
     {
@@ -83,7 +81,7 @@ Node *remover(Node *raiz, int valor)
         Node *temp = raiz->dir;
         while (temp->esq != NULL)
         {
-            temp = raiz->esq;
+            temp = temp->esq;
         }
 
         raiz->valor = temp->valor;
@@ -102,7 +100,25 @@ void imprimirEmOrdem(Node *raiz)
     }
 }
 
-void uiUsuario(raiz)
+void imprimirPreOrdem(Node *raiz)
+{
+    if (raiz != NULL)
+    {
+        printf("%d ", raiz->valor);
+        imprimirPreOrdem(raiz->esq);
+        imprimirPreOrdem(raiz->dir);
+    }
+}
+
+void imprimirPosOrdem(Node *raiz) {
+    if (raiz != NULL) {
+        imprimirPosOrdem(raiz->esq);
+        imprimirPosOrdem(raiz->dir);
+        printf("%d ", raiz->valor);
+    }
+}
+
+Node *uiUsuario(Node *raiz)
 {
     int resposta;
     do
@@ -121,7 +137,7 @@ void uiUsuario(raiz)
             printf("Qual valor deseja inserir: ");
             int valor;
             scanf("%d", &valor);
-            inserir(raiz, valor);
+            raiz = inserir(raiz, valor);
             break;
 
         case 2:
@@ -129,55 +145,39 @@ void uiUsuario(raiz)
             break;
 
         case 3:
-            printf("Qual dos valores deseja remover?");
+            printf("Qual dos valores deseja remover?\n");
             imprimirEmOrdem(raiz);
-            int valor;
-            scanf("%d", &valor);
-            remover(raiz, valor);
+            int valorRemocao;
+            scanf("%d", &valorRemocao);
+            raiz = remover(raiz, valorRemocao);
             break;
 
         case 4:
-            printf("Em qual ordem deseja mostrar a árvore");
-            printf("1. Pré-ordem");
-            printf("2. Em ordem");
-            printf("3. Pós-ordem");
+            printf("Em qual ordem deseja mostrar a árvore\n");
+            printf("1. Pré-ordem\n");
+            printf("2. Em ordem\n");
+            printf("3. Pós-ordem\n");
             int escolha;
             scanf("%d", &escolha);
             switch (escolha)
             {
-            case 1:
-
-                break;
-
-            case 2:
-
-                break;
-
-            case 3:
-                imprimirEmOrdem(raiz);
-                break;
+            case 1: imprimirPreOrdem(raiz); break;
+            case 2: imprimirEmOrdem(raiz); break;
+            case 3: imprimirPosOrdem(raiz); break;
             }
+            printf("\n");
+            break;
         }
     } while (resposta != 0);
 
-    raiz = inserir(raiz, 50);
-    inserir(raiz, 30);
-    inserir(raiz, 60);
-    inserir(raiz, 20);
-    inserir(raiz, 40);
-    inserir(raiz, 90);
-
-    remover(raiz, 50);
-
-    imprimirEmOrdem(raiz);
-    printf("\n");
+    return raiz;
 }
 
 int main()
 {
     Node *raiz = NULL;
 
-    int resposta;
+    raiz = uiUsuario(raiz);
 
     return 0;
 }
