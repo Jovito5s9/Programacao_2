@@ -106,6 +106,7 @@ void corrigirInsercao(RBNo *z){
     raiz->cor = 'B';
 }
 
+//principal na inserçao
 void insercao(int data){
     RBNo *z = criarNo(data);
     RBNo *y = NIL;
@@ -131,10 +132,38 @@ void insercao(int data){
     corrigirInsercao(z);
 }
 
+//buscar os valores
+RBNo* buscar(RBNo *no, int data){
+    if (no==NIL || data == no->data){
+        return no;
+    }
+    if (data < no->data){
+        return buscar(no->esquerda, data);
+    }
+    return buscar(no->direita,data);
+}
+
+void preOrdem(RBNo *no){
+    if (no!=NIL){
+        printf("%d(%c)",no->data,no->cor);
+        preOrdem(no->esquerda);
+        preOrdem(no->direita);
+    }
+}
+
 int main(){
     inicializarNIL();
     raiz=NIL;
 
     insercao(10);
+    insercao(9);
+    insercao(11);
+    insercao(8);
+    if (buscar(raiz,11)!= NIL){
+    printf("encontrado\n");
+    }else{
+        printf("não encontrado\n");
+    }
+    preOrdem(raiz);
     return 0;
 }
