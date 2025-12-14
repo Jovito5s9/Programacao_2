@@ -68,12 +68,73 @@ void rotacionarDir(RBNo *x){
 
 
 void corrigirInsercao(RBNo *z){
+    while(z->pai->cor=='R'){
+        if (z->pai==z->pai->pai->esquerda){
+            RBNo *y=z->pai->pai->direita;
+            if(y->cor=='R'){
+                z->pai->cor='B';
+                y->cor='B';
+                z->pai->pai->cor='R';
+                z=z->pai->pai;
+            }else{
+                if (z==z->pai->direita){
+                    z=z->pai;
+                    rotacionarEsq(z);
+                }
+                z->pai->cor='B';
+                z->pai->pai->cor='R';
+                rotacionarDir(z->pai->pai);
+            }
+        }else {
+            RBNo *y = z->pai->pai->esquerda;
+            if (y->cor == 'R') {
+                z->pai->cor = 'B';
+                y->cor = 'B';
+                z->pai->pai->cor = 'R';
+                z = z->pai->pai;
+            } else {
+                if (z == z->pai->esquerda) {
+                    z = z->pai;
+                    rotacionarDir(z);
+                }
+                z->pai->cor = 'B';
+                z->pai->pai->cor = 'R';
+                rotacionarEsq(z->pai->pai);
+            }
+        }
+    }
+    raiz->cor = 'B';
+}
 
+void insercao(int data){
+    RBNo *z = criarNo(data);
+    RBNo *y = NIL;
+    RBNo *x = raiz;
+
+    while (x!=NIL){
+        y=x;
+        if(z->data < x->data){
+            x=x->esquerda;
+        }else{
+            x=x->direita;
+        }
+    }
+
+    z->pai=y;
+    if(y==NIL){
+        raiz=z;
+    }else if(z->data < y->data){
+        y->esquerda=z;
+    }else{
+        y->direita=z;
+    }
+    corrigirInsercao(z);
 }
 
 int main(){
     inicializarNIL();
     raiz=NIL;
-    criarNo(10);
+
+    insercao(10);
     return 0;
 }
