@@ -151,19 +151,61 @@ void preOrdem(RBNo *no){
     }
 }
 
+void emOrdem(RBNo *no){
+    if (no!=NIL){
+        emOrdem(no->esquerda);
+        printf("%d(%c)",no->data,no->cor);
+        emOrdem(no->direita);
+    }
+}
+
+void posOrdem(RBNo *no){
+    if (no!=NIL){
+        posOrdem(no->esquerda);
+        posOrdem(no->direita);
+        printf("%d(%c)",no->data,no->cor);
+    }
+}
+
 int main(){
     inicializarNIL();
     raiz=NIL;
 
-    insercao(10);
-    insercao(9);
-    insercao(11);
-    insercao(8);
-    if (buscar(raiz,11)!= NIL){
-    printf("encontrado\n");
-    }else{
-        printf("não encontrado\n");
-    }
-    preOrdem(raiz);
+    int opcao,valor;
+    do {
+        printf("\n---arvore rubro negra---\n");
+        printf("1 - Inserir\n");
+        printf("2 - buscar\n");
+        printf("3 - exibir (1-pre | 2-em | 3-pos)\n");
+        printf("0 - sair\n");
+        printf("escolha: ");
+        scanf("%d",&opcao);
+
+        switch (opcao){
+        case 1:
+            printf("valor: ");
+            scanf("%d",&valor);
+            insercao(valor);
+            break;
+        
+        case 2:
+            printf("valor: ");
+            scanf("%d",&valor);
+            buscar(raiz,valor);
+            break;
+        case 3:
+            printf("tipo: ");
+            scanf("%d",&valor);
+            if (valor==1){
+                preOrdem(raiz);
+            }else if (valor==2){
+                emOrdem(raiz);
+            }else if (valor==3){
+                posOrdem(raiz);
+            }
+            printf("\n");
+            break;
+        }
+    }while (opcao!=0);
     return 0;
 }
