@@ -13,7 +13,7 @@ RBNo *NIL; //Esse é o nó sentinela
 void inicializarNIL(){
     NIL = (RBNo *)malloc(sizeof(RBNo));
     NIL->cor='B';//cor preta padrao pros espacos vazios
-    NIL->esquerda=NIL->direita=NIL->pai=NULL;
+    NIL->esquerda=NIL->direita=NIL->pai=NIL;
 }
 
 RBNo* criarNo(int data){
@@ -116,8 +116,12 @@ void insercao(int data){
         y=x;
         if(z->data < x->data){
             x=x->esquerda;
-        }else{
+        }else if (z->data > x->data){
             x=x->direita;
+        }else{
+            printf("valor %d ja existente na arvore\n",data);
+            free(z);
+            return;
         }
     }
 
@@ -191,7 +195,12 @@ int main(){
         case 2:
             printf("valor: ");
             scanf("%d",&valor);
-            buscar(raiz,valor);
+            RBNo *res = buscar(raiz, valor);
+            if (res != NIL)
+                printf("Encontrado: %d (%c)\n", res->data, res->cor);
+            else
+                printf("Valor nao encontrado\n");
+
             break;
         case 3:
             printf("tipo: ");
