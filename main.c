@@ -171,6 +171,93 @@ void posOrdem(RBNo *no){
     }
 }
 
+RBNo* minimo(RBNo *no){
+    while (no->esquerda != NIL){
+        no = no->esquerda;
+    }
+    return no;
+}
+
+void transplantar(RBNo *u, RBNo *v){
+    //u=no q vai sair | v=filho q vai substituir u
+    if (u->pai == NIL){
+        raiz = v;
+    }
+    else if (u == u->pai->esquerda){
+        u->pai->esquerda = v;
+    }
+    else{
+        u->pai->direita = v;
+    }
+    v->pai = u->pai;
+}
+
+void corrigirRemocao(RBNo *x){//se livrar de 2 pretos
+    while (x!=raiz && x->cor=='B'){
+        if (x==x->pai->esquerda){
+            RBNo *w=x->pai->direita;
+            if(w->cor=='R'){//caso de preto com irmao vermelho
+                w->cor='B';
+                x->pai->cor='R';
+                rotacionarEsq(x->pai);
+                w = x->pai->direita;
+            }
+            //caso de preto com filhos pretos
+            if (w->esquerda->cor == 'B' && w->direita->cor == 'B'){
+                w->cor = 'R';
+                x = x->pai;
+            }
+            else{
+                //caso de irmao e filho preto
+                if (w->direita->cor == 'B'){
+                    w->esquerda->cor = 'B';
+                    w->cor = 'R';
+                    rotacionarDir(w);
+                    w = x->pai->direita;
+                }
+                //filho vermelho e irmao preto
+                w->cor = x->pai->cor;
+                x->pai->cor = 'B';
+                w->direita->cor = 'B';
+                rotacionarEsq(x->pai);
+                x = raiz;
+            }
+        }
+
+
+        else{ //o mesmo de cima mas do outro lado(simetrico)
+            RBNo *w = x->pai->esquerda;
+
+            if (w->cor == 'R'){
+                w->cor = 'B';
+                x->pai->cor = 'R';
+                rotacionarDir(x->pai);
+                w = x->pai->esquerda;
+            }
+
+            if (w->direita->cor == 'B' && w->esquerda->cor == 'B'){
+                w->cor = 'R';
+                x = x->pai;
+            }
+            else{
+                if (w->esquerda->cor == 'B'){
+                    w->direita->cor = 'B';
+                    w->cor = 'R';
+                    rotacionarEsq(w);
+                    w = x->pai->esquerda;
+                }
+
+                w->cor = x->pai->cor;
+                x->pai->cor = 'B';
+                w->esquerda->cor = 'B';
+                rotacionarDir(x->pai);
+                x = raiz;
+            }
+        }
+    }
+    x->cor = 'B';
+}
+
 int main(){
     inicializarNIL();
     raiz=NIL;
