@@ -258,6 +258,55 @@ void corrigirRemocao(RBNo *x){//se livrar de 2 pretos
     x->cor = 'B';
 }
 
+
+void remover(int data){
+    RBNo *z= buscar(raiz, data);
+
+    if (z==NIL){
+        printf("valor não encontrado\n");
+        return;
+    }
+
+    RBNo *y=z;
+    char corOriginal=y->cor;
+    RBNo *x;
+
+    if (z->esquerda == NIL){//1 filho
+        x = z->direita;
+        transplantar(z, z->direita);
+    }
+    else if (z->direita == NIL){//1 filho tambem
+        x = z->esquerda;
+        transplantar(z, z->esquerda);
+    }
+    else{//2 filhos,_,
+        y = minimo(z->direita);//menor filho da direita
+        corOriginal = y->cor;
+        x = y->direita;
+
+        if (y->pai == z){
+            x->pai = y;
+        }
+        else{
+            transplantar(y, y->direita);
+            y->direita = z->direita;
+            y->direita->pai = y;
+        }
+
+        transplantar(z, y);//termina de arrumar
+        y->esquerda = z->esquerda;
+        y->esquerda->pai = y;
+        y->cor = z->cor;
+    }
+
+    free(z);//libera
+
+    if (corOriginal == 'B'){
+        corrigirRemocao(x);//corrige
+    }
+}
+
+
 int main(){
     inicializarNIL();
     raiz=NIL;
@@ -268,6 +317,7 @@ int main(){
         printf("1 - Inserir\n");
         printf("2 - buscar\n");
         printf("3 - exibir (1-pre | 2-em | 3-pos)\n");
+        printf("4 - remover\n");
         printf("0 - sair\n");
         printf("escolha: ");
         scanf("%d",&opcao);
@@ -278,7 +328,7 @@ int main(){
             scanf("%d",&valor);
             insercao(valor);
             break;
-        
+
         case 2:
             printf("valor: ");
             scanf("%d",&valor);
@@ -289,6 +339,7 @@ int main(){
                 printf("Valor nao encontrado\n");
 
             break;
+
         case 3:
             printf("tipo: ");
             scanf("%d",&valor);
@@ -300,6 +351,12 @@ int main(){
                 posOrdem(raiz);
             }
             printf("\n");
+            break;
+
+        case 4:
+            printf("valor: ");
+            scanf("%d",&valor);
+            remover(valor);
             break;
         }
     }while (opcao!=0);
