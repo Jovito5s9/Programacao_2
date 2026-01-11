@@ -58,8 +58,22 @@ NoTrie* inserir(char* palavra, NoTrie* raiz){
 
     free(palavra);
     trie->FimPalavra=true;
-    
+
     return raiz;
+}
+
+void SugerirPalavra(NoTrie* atual, char* prefixo_atual, int nivel){
+    if(atual->FimPalavra){
+        prefixo_atual[nivel] = '\0';
+        printf("sugestão: %s\n",prefixo_atual);
+    }
+
+    for(int i=0; i<ALFABETO_SIZE;i++){
+        if(atual->proximo[i]!=NULL){
+            prefixo_atual[nivel] = i + 'a';
+            SugerirPalavra(atual->proximo[i], prefixo_atual, nivel + 1);
+        }
+    }
 }
 
 int main(){
