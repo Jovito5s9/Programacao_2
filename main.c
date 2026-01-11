@@ -14,6 +14,9 @@ typedef struct NoTrie{
 
 NoTrie* CriarNo(){
     NoTrie *NovoNo = (NoTrie *)malloc(sizeof(NoTrie));
+    for(int i=0;i< ALFABETO_SIZE;i++){
+        NovoNo->proximo[i]=NULL;
+    }
     return NovoNo;
 }
 
@@ -26,6 +29,39 @@ char* lower(char *palavra){
     return palavra_lower;
 }
 
+int LetraPraNum(char letra){
+    if (isalpha(letra)) {
+        return(int)(letra-'a');
+    }
+    return 26;
+}
+
+NoTrie* inserir(char* palavra, NoTrie* raiz){
+    if (raiz == NULL) {
+        raiz = CriarNo();
+    }
+
+    palavra=lower(palavra);
+    NoTrie *trie=raiz;
+
+    for(int i=0;palavra[i] != '\0';i++){
+        char letra=palavra[i];
+        int numero=LetraPraNum(letra);
+        if(numero==26){
+            continue;
+        }
+        if(trie->proximo[numero]==NULL){
+            trie->proximo[numero]=CriarNo();
+        }
+        trie=trie->proximo[numero];
+    }
+
+    free(palavra);
+    trie->FimPalavra=true;
+    
+    return raiz;
+}
+
 int main(){
     NoTrie *raiz = CriarNo();
     int i=10;
@@ -33,6 +69,7 @@ int main(){
     printf("%c",i+letra);//base pra achar as letras
     char *palavra = lower("TESTANDO ISSO");
     printf("%s", palavra);
+    printf("%d", LetraPraNum('j'));
     free(palavra);
     return 0;
 }
