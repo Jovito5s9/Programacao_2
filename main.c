@@ -17,6 +17,7 @@ NoTrie* CriarNo(){
     for(int i=0;i< ALFABETO_SIZE;i++){
         NovoNo->proximo[i]=NULL;
     }
+    NovoNo->FimPalavra=false;
     return NovoNo;
 }
 
@@ -62,28 +63,42 @@ NoTrie* inserir(char* palavra, NoTrie* raiz){
     return raiz;
 }
 
-void SugerirPalavra(NoTrie* atual, char* prefixo_atual, int nivel){
-    if(atual->FimPalavra){
-        prefixo_atual[nivel] = '\0';
-        printf("sugestão: %s\n",prefixo_atual);
+void PercorrerTrie(NoTrie* atual, char* buffer, int nivel) {
+    if (atual->FimPalavra) {
+        buffer[nivel] = '\0';
+        printf("Sugestao: %s\n", buffer);
     }
 
-    for(int i=0; i<ALFABETO_SIZE;i++){
-        if(atual->proximo[i]!=NULL){
-            prefixo_atual[nivel] = i + 'a';
-            SugerirPalavra(atual->proximo[i], prefixo_atual, nivel + 1);
+    for (int i = 0; i < ALFABETO_SIZE; i++) {
+        if (atual->proximo[i] != NULL) {
+            buffer[nivel] = i + 'a';
+            PercorrerTrie(atual->proximo[i], buffer, nivel + 1);
         }
     }
 }
 
+void SugerirPalavra(NoTrie* raiz, char* prefixo) {
+    NoTrie* atual = raiz;
+    char buffer[100];
+    int i;
+    for (i = 0; prefixo[i] != '\0'; i++) {
+        int indice = LetraPraNum(prefixo[i]);
+        if (atual->proximo[indice] == NULL) {
+            printf("Nenhuma sugestao encontrada.\n");
+            return;
+        }
+        buffer[i] = prefixo[i];
+        atual = atual->proximo[indice];
+    }
+    PercorrerTrie(atual, buffer, i);
+}
+
 int main(){
     NoTrie *raiz = CriarNo();
-    int i=10;
-    char letra='a';
-    printf("%c",i+letra);//base pra achar as letras
-    char *palavra = lower("TESTANDO ISSO");
-    printf("%s", palavra);
-    printf("%d", LetraPraNum('j'));
-    free(palavra);
+    inserir("palavra",raiz);
+    inserir("para",raiz);
+    inserir("par",raiz);
+    inserir("pa",raiz);
+    SugerirPalavra(raiz,"pal");
     return 0;
 }
