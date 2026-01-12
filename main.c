@@ -99,13 +99,42 @@ void SugerirPalavra(NoTrie* raiz, char* prefixo) {
 
 int main() {
     NoTrie *raiz = CriarNo();
-    inserir("palavra", raiz);
-    inserir("para", raiz);
-    inserir("par", raiz);
-    inserir("pa", raiz);
-    printf("palavra sugerida: ");
-    SugerirPalavra(raiz, "pala"); 
-    
-    printf("\n");
+    int opc = -1;
+    char buffer[100];
+
+    while (opc != 0) {
+        printf("\n--- MENU TRIE ---\n");
+        printf("1 - inserir palavra\n");
+        printf("2 - sugerir palavra (auto-completar)\n");
+        printf("0 - sair\n");
+        printf("escolha: ");
+        
+        if (scanf("%d", &opc) != 1) {
+            printf("entrada invalida\n");
+            while(getchar() != '\n');
+            continue;
+        }
+        switch (opc) {
+            case 1:
+                printf("digite a palavra para inserir: ");
+                scanf("%s", buffer);
+                inserir(buffer, raiz);
+                printf("palavra '%s' inserida com sucesso.\n", buffer);
+                break;
+            case 2:
+                printf("digite o prefixo: ");
+                scanf("%s", buffer);
+                printf("sugestao encontrada: ");
+                SugerirPalavra(raiz, buffer); 
+                printf("\n");
+                break;
+            case 0:
+                printf("saindo\n");
+                break;
+            default:
+                printf("opcao invalida\n");
+                break;
+        }
+    }
     return 0;
 }
