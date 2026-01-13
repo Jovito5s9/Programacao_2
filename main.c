@@ -97,6 +97,41 @@ void SugerirPalavra(NoTrie* raiz, char* prefixo) {
     }
 }
 
+bool temFilhos(NoTrie* no) {
+    for (int i = 0; i < ALFABETO_SIZE; i++) {
+        if (no->proximo[i] != NULL){
+            return true;
+        }
+    }
+    return false;
+}
+
+NoTrie* remover(NoTrie* raiz, char* palavra, int nivel) {
+    if (raiz == NULL) return NULL;
+
+    if (palavra[nivel] == '\0') {
+        if (raiz->FimPalavra) raiz->FimPalavra = false;
+        if (!temFilhos(raiz)) {
+            free(raiz);
+            raiz = NULL;
+        }
+        return raiz;
+    }
+
+    int indice = LetraPraNum(palavra[nivel]);
+    if (indice != 26) {//recursao
+        raiz->proximo[indice] = remover(raiz->proximo[indice], palavra, nivel + 1);
+    }
+
+    if (!temFilhos(raiz) && !raiz->FimPalavra) {
+        free(raiz);
+        raiz = NULL;
+    }
+
+    return raiz;
+}
+
+
 int main() {
     NoTrie *raiz = CriarNo();
     int opc = -1;
@@ -106,6 +141,7 @@ int main() {
         printf("\n--- MENU TRIE ---\n");
         printf("1 - inserir palavra\n");
         printf("2 - sugerir palavra (auto-completar)\n");
+        printf("3 - remover palavra\n");
         printf("0 - sair\n");
         printf("escolha: ");
         
@@ -127,6 +163,18 @@ int main() {
                 printf("sugestao encontrada: ");
                 SugerirPalavra(raiz, buffer); 
                 printf("\n");
+                break;
+            case 3:
+                printf("digite a palavra para remover: ");
+                scanf("%s", buffer);
+                char* palavra_limpa = lower(buffer);
+                raiz = remover(raiz, palavra_limpa, 0);
+                free(palavra_limpa);
+                printf("operacao de remocao concluida.\n");
+
+                if (raiz == NULL) {
+                    raiz = CriarNo();
+                }
                 break;
             case 0:
                 printf("saindo\n");
