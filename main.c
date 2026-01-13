@@ -63,21 +63,17 @@ NoTrie* inserir(char* palavra, NoTrie* raiz){
     return raiz;
 }
 
-bool BuscarPrimeiraSugestao(NoTrie* atual, char* buffer, int nivel) {
+void BuscarPrimeiraSugestao(NoTrie* atual, char* buffer, int nivel) {
     if (atual->FimPalavra) {
         buffer[nivel] = '\0';
-        return true; 
+        printf("- %s\n", buffer);
     }
     for (int i = 0; i < ALFABETO_SIZE; i++) {
         if (atual->proximo[i] != NULL) {
             buffer[nivel] = i + 'a';
-            if (BuscarPrimeiraSugestao(atual->proximo[i], buffer, nivel + 1)) {
-                return true;
-            }
+            BuscarPrimeiraSugestao(atual->proximo[i], buffer, nivel + 1);
         }
     }
-
-    return false;
 }
 
 void SugerirPalavra(NoTrie* raiz, char* prefixo) {
@@ -92,9 +88,7 @@ void SugerirPalavra(NoTrie* raiz, char* prefixo) {
         buffer[i] = prefixo[i];
         atual = atual->proximo[indice];
     }
-    if (BuscarPrimeiraSugestao(atual, buffer, i)) {
-        printf("%s", buffer);
-    }
+    BuscarPrimeiraSugestao(atual, buffer, i);
 }
 
 bool temFilhos(NoTrie* no) {
